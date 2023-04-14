@@ -1,17 +1,22 @@
-name: Cypress Tests
-
-on: push
-
-jobs:
-  cypress-run:
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
-      - name: Cypress run
-        uses: cypress-io/github-action@v5
-        with:
-          build: npm run build
-          start: npm start
+Started by user Samuel Ubong
+Running as SYSTEM
+Building in workspace C:\ProgramData\Jenkins\.jenkins\workspace\Symphony@2
+The recommended git tool is: NONE
+No credentials specified
+Cloning the remote Git repository
+Cloning repository https://github.com/samuelubong/Symphony.git
+ > git.exe init C:\ProgramData\Jenkins\.jenkins\workspace\Symphony@2 # timeout=10
+Fetching upstream changes from https://github.com/samuelubong/Symphony.git
+ > git.exe --version # timeout=10
+ > git --version # 'git version 2.39.2.windows.1'
+ > git.exe fetch --tags --force --progress -- https://github.com/samuelubong/Symphony.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git.exe config remote.origin.url https://github.com/samuelubong/Symphony.git # timeout=10
+ > git.exe config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+ > git.exe rev-parse "refs/remotes/origin/master^{commit}" # timeout=10
+Checking out Revision 1392f0f39bdd32aa8f9c2d94e973d71fe35852be (refs/remotes/origin/master)
+ > git.exe config core.sparsecheckout # timeout=10
+ > git.exe checkout -f 1392f0f39bdd32aa8f9c2d94e973d71fe35852be # timeout=10
+Commit message: "Update main.yml"
+First time build. Skipping changelog.
+Finished: SUCCESS
