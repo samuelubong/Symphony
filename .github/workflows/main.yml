@@ -1,61 +1,17 @@
-name: symphony
-on:
-  push:
-    branches:
-      - 'master'
-  pull_request:
-  workflow_dispatch:
+name: Cypress Tests
+
+on: push
 
 jobs:
- tests:
+  cypress-run:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Cypress info
-        uses: ./
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
         with:
-          # just for full picture after installing Cypress
-          # print information about detected browsers, etc
-          # see https://on.cypress.io/command-line#cypress-info
-          build: npx cypress info
-          working-directory: examples/browser
-
-      - name: Chrome
-        uses: ./
-        with:
-          working-directory: symphony
-          browser: chrome
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: screenshots-in-chrome
-          path: examples/browser/cypress/screenshots
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: video-in-chrome
-          path: examples/browser/cypress/videos
-
-      - run: npx image-size cypress/screenshots/**/*.png
-        working-directory: symphony
-      - name: Chrome headless
-        uses: ./
-        with:
-          working-directory: examples/browser
-          browser: chrome
-          headed: true
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: screenshots-in-headless-chrome
-          path: examples/browser/cypress/screenshots
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: video-in-headless-chrome
-          path: examples/browser/cypress/videos
-
-      - run: npx image-size cypress/screenshots/**/*.png
-        working-directory: symphony
+          build: npm run build
+          start: npm start
