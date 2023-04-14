@@ -1,19 +1,61 @@
-name: Cypress Tests using Cypress Docker Image
-
-on: push
+name: symphony
+on:
+  push:
+    branches:
+      - 'master'
+  pull_request:
+  workflow_dispatch:
 
 jobs:
-  cypress-run:
+ tests:
     runs-on: ubuntu-22.04
-    container: cypress/browsers:node12.18.3-chrome87-ff82
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
-      - name: Cypress run
-        uses: cypress-io/github-action@v5
+      - name: Cypress info
+        uses: ./
         with:
-          # Specify Browser since container image is compiled with Firefox
-          browser: firefox
+          # just for full picture after installing Cypress
+          # print information about detected browsers, etc
+          # see https://on.cypress.io/command-line#cypress-info
+          build: npx cypress info
+          working-directory: examples/browser
+
+      - name: Chrome
+        uses: ./
+        with:
+          working-directory: symphony
+          browser: chrome
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: screenshots-in-chrome
+          path: examples/browser/cypress/screenshots
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: video-in-chrome
+          path: examples/browser/cypress/videos
+
+      - run: npx image-size cypress/screenshots/**/*.png
+        working-directory: symphony
+      - name: Chrome headless
+        uses: ./
+        with:
+          working-directory: examples/browser
+          browser: chrome
+          headed: true
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: screenshots-in-headless-chrome
+          path: examples/browser/cypress/screenshots
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: video-in-headless-chrome
+          path: examples/browser/cypress/videos
+
+      - run: npx image-size cypress/screenshots/**/*.png
+        working-directory: symphony
